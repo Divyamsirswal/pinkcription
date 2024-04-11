@@ -1,3 +1,0 @@
-hello world
-this is a confidential line and need to be cyphered
-pass123@456
