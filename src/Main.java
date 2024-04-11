@@ -2,46 +2,55 @@ import java.util.*;
 import java.nio.file.*;
 
 public class Main {
-	public static void main(String[] args) {
-		String name;
-		String pwd;
-		String file_;
+    public static void main(String[] args) {
+        String name;
+        String pwd;
+        String file_;
 
-		try (Scanner sc = new Scanner(System.in)) {
-			System.out.print("Enter username: ");
-			name = sc.nextLine();
+        try (Scanner sc = new Scanner(System.in)) {
+            System.out.print("Enter username: ");
+            name = sc.nextLine();
 
-			if (!InputValidation.isValidUsername(name)) {
-				throw new IllegalArgumentException(
-						"Invalid username: Username must be at least 5 and atmost 8 character long");
-			}
+            if (!InputValidation.isValidUsername(name)) {
+                throw new IllegalArgumentException(
+                        "Invalid username: Username must be at least 5 and atmost 8 character long");
+            }
 
-			System.out.print("Enter password: ");
-			pwd = sc.nextLine();
+            System.out.print("Enter password: ");
+            pwd = sc.nextLine();
 
-			if (!InputValidation.isValidPassword(pwd)) {
-				throw new IllegalArgumentException(
-						"Invalid password: Password must be at least 5 and atmost 8 character long");
-			}
+            if (!InputValidation.isValidPassword(pwd)) {
+                throw new IllegalArgumentException(
+                        "Invalid password: Password must be at least 5 and atmost 8 character long");
+            }
 
-			System.out.print("Enter file name: ");
+            System.out.println("1. Encrypt File");
+            System.out.println("2. Decrypt File");
+            int ask = sc.nextInt();
+            sc.nextLine();
 
-			file_ = sc.nextLine();
-			Path path = Paths.get(file_);
+            System.out.print("Enter file name: ");
 
-			if (!(Files.exists(path))) {
-				throw new IllegalArgumentException("File does not exist: " + file_);
-			}
+            file_ = sc.nextLine();
+            Path path = Paths.get(file_);
 
-			User usr = new User(name, pwd, file_);
-			HashString hashStr = new HashString(usr);
+            if (!(Files.exists(path))) {
+                throw new IllegalArgumentException("File does not exist: " + file_);
+            }
 
-			EncryptionCustom enc = new EncryptionCustom(usr, hashStr);
-			enc.encrypt();
-			enc.decrypt();
+            User usr = new User(name, pwd, file_);
+            HashString hashStr = new HashString(usr);
 
-		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
-		}
-	}
+            Encryption enc = new Encryption(usr, hashStr);
+
+            if (ask == 1) {
+                enc.encrypt();
+            } else {
+                enc.decrypt();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
 }
