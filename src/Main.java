@@ -12,7 +12,8 @@ public class Main {
 			name = sc.nextLine();
 
 			if (!InputValidation.isValidUsername(name)) {
-				throw new IllegalArgumentException("Invalid username: Username must be at least 5 and atmost 8 character long");
+				throw new IllegalArgumentException(
+						"Invalid username: Username must be at least 5 and atmost 8 character long");
 			}
 
 			System.out.print("Enter password: ");
