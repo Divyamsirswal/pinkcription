@@ -33,11 +33,12 @@ public class Main {
 				throw new IllegalArgumentException("File does not exist: " + file_);
 			}
 
-			User myLove = new User(name, pwd, file_);
+			User usr = new User(name, pwd, file_);
+			HashString hashStr = new HashString(usr);
 
-			System.out.println(myLove.get_user_name());
-			System.out.println(myLove.get_user_pwd());
-			System.out.println(myLove.get_file_path());
+			EncryptionCustom enc = new EncryptionCustom(usr, hashStr);
+			enc.encrypt();
+			enc.decrypt();
 
 		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());

@@ -76,7 +76,7 @@ public class HashString {
             }
         }
 
-        return result % 7;
+        return result % 10;
     }
 
     private String generateKey(){
