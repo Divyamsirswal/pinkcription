@@ -1,58 +1,78 @@
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.security.MessageDigest;
 
 public class Encryption {
+    private final SecretKey key;
+    private String in_file;
+    private String out_file;
 
-    private final String key;
-    private final String in_file;
-    private final String out_file;
-
-    public Encryption(User usr, HashString hashed) {
-        this.key = hashed.getKey();
-        this.in_file = usr.get_file_path();
-        this.out_file = decide_ouputFile(usr.get_file_path());
+    public Encryption(User user, HashString hashString) {
+        this.key = generateKey(hashString.getKey());
+        this.in_file = user.get_file_path();
+        this.out_file = "enc.txt";
     }
 
-    private String decide_ouputFile(String filePath) {
-        for(int i=filePath.length()-1; i>=0; i--) {
-            if(filePath.charAt(i) == '\\') {
-                return "enc-" + filePath.substring(i+1);
-            }
+    private SecretKey generateKey(String keyStr) {
+        byte[] keyBytes = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            keyBytes = md.digest(keyStr.getBytes());
+        } catch (Exception e) {
+            System.err.println("Error generating key");
         }
-        return "encrypted.txt";
-    }
-
-    public String cypher(String str) {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < str.length(); i++) {
-            char ch = (char) (str.charAt(i) ^ key.charAt(i % key.length()));
-            sb.append(ch);
-        }
-        return sb.toString();
+        return new SecretKeySpec(keyBytes, "AES");
     }
 
     public void encrypt() {
-        BufferedReader reader = null;
-        BufferedWriter writer = null;
-        try {
-            reader = new BufferedReader(new FileReader(in_file));
-            writer = new BufferedWriter(new FileWriter(out_file));
+        try{
+            Cipher c = Cipher.getInstance("AES");
+            c.init(Cipher.ENCRYPT_MODE, key);
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String encryptedLine = cypher(line);
-                writer.write(encryptedLine);
-                writer.newLine();
-            }
-
-            reader.close();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            encDecFile(c);
+        }
+        catch (Exception e) {
+            System.err.println("Error encrypting");
         }
     }
 
-    public void decrypt(){
-        encrypt();
+    public void decrypt() {
+        try{
+            Cipher c = Cipher.getInstance("AES");
+            c.init(Cipher.DECRYPT_MODE, key);
+            encDecFile(c);
+        }
+        catch (Exception e) {
+            System.err.println("Error decrypting");
+        }
+    }
+
+    private void encDecFile(Cipher cipher){
+        try {
+            FileInputStream inputStream = new FileInputStream(in_file);
+            FileOutputStream outputStream = new FileOutputStream(out_file);
+
+            byte[] buffer = new byte[64];
+            int bytesRead;
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                byte[] bytes = cipher.update(buffer, 0, bytesRead);
+                if (bytes != null) {
+                    outputStream.write(bytes);
+                }
+            }
+
+            byte[] bytes = cipher.doFinal();
+            if (bytes != null) {
+                outputStream.write(bytes);
+            }
+
+            inputStream.close();
+            outputStream.close();
+        } catch (Exception e) {
+            System.err.println("Error encryptin/decrypting");
+        }
     }
 }
