@@ -20,7 +20,7 @@ public class Main {
 
 			if (!InputValidation.isValidPassword(pwd)) {
 				throw new IllegalArgumentException(
-						"Invalid password: Password must be at least 8 and atmost 14 character long");
+						"Invalid password: Password must be at least 5 and atmost 8 character long");
 			}
 
 			System.out.print("Enter file name: ");
