@@ -1,13 +1,5 @@
-import java.util.*;
-
-public class Main {
-	public static void main(String[] args) {
-		try {
-			Scanner sc = new Scanner(System.in);
-
-			
-		} catch (Exception e) {
-
-		}
+public class Main{
+	public static void main(String[] args){
+		System.out.println("\t\tWelcome to Pinkcrypt");
 	}
 }
