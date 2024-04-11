@@ -1,13 +1,9 @@
-import java.security.MessageDigest;
-
 public class HashString {
 
-    private final String keyStr;
     private final String key;
 
     public HashString(User usr) {
-        this.keyStr = generateKeyStr(usr.get_user_name(), usr.get_user_pwd());
-        this.key = generateKey();
+        this.key= generateKeyStr(usr.get_user_name(), usr.get_user_pwd());
     }
 
     public String getKey() {
@@ -79,26 +75,4 @@ public class HashString {
         return result % 10;
     }
 
-    private String generateKey(){
-        MessageDigest md = null;
-        StringBuilder sb = new StringBuilder();
-
-        try{
-            md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(keyStr.getBytes());
-
-            for(byte b : hash){
-                String s = Integer.toHexString(b & 0xff);
-                if(s.length() == 1){
-                    sb.append('0');
-                }
-                sb.append(s);
-            }
-        }
-        catch (Exception e){
-            System.err.println("Some Error Occured : (Code : 101)");
-        }
-
-        return sb.toString();
-    }
 }
