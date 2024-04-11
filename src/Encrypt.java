@@ -17,7 +17,7 @@ public class Encrypt {
         }
         int c;
         String newstr="";
-        for(int i=0;content.charAt(i)!='\0';i++)
+        for(int i=0;i<content.length();i++)
         {
             c=content.charAt(i);
             String num=Integer.toString(c);
