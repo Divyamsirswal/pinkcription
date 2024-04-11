@@ -18,7 +18,7 @@ public class User {
     return user_pwd;
   }
 
-  public String get_file_path(){
+  public String get_file_path() {
     return file_;
   }
 }
