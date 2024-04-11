@@ -1,5 +1,4 @@
 import java.util.*;
-
 import java.nio.file.*;
 
 public class Main {
@@ -13,14 +12,15 @@ public class Main {
 			name = sc.nextLine();
 
 			if (!InputValidation.isValidUsername(name)) {
-				throw new IllegalArgumentException("Invalid username: Username must be at least 5 characters long");
+				throw new IllegalArgumentException("Invalid username: Username must be at least 5 and atmost 8 character long");
 			}
 
 			System.out.print("Enter password: ");
 			pwd = sc.nextLine();
 
 			if (!InputValidation.isValidPassword(pwd)) {
-				throw new IllegalArgumentException("Invalid password: Password must be at least 8 characters long");
+				throw new IllegalArgumentException(
+						"Invalid password: Password must be at least 8 and atmost 14 character long");
 			}
 
 			System.out.print("Enter file name: ");
